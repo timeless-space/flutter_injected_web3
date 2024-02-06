@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             signPersonalMessage: signPersonelMessage,
             isDebug: true,
             initialUrlRequest:
-                URLRequest(url: Uri.parse('https://opensea.io/')),
+                URLRequest(url: WebUri.uri(Uri.parse('https://opensea.io/'))),
             chainId: chainId,
             rpc: rpc),
       ),
