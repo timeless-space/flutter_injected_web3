@@ -515,7 +515,7 @@ class _InjectedWebviewState extends State<InjectedWebview> {
         : _loadInitJs(widget.chainId, widget.rpc);
     debugPrint("RPC: ${widget.rpc}");
     await controller.evaluateJavascript(source: initJs);
-    if (controller.hasJavaScriptHandler(handlerName: "OrangeHandler")) {
+    if (!controller.hasJavaScriptHandler(handlerName: "OrangeHandler")) {
       controller.addJavaScriptHandler(
           handlerName: "OrangeHandler",
           callback: (callback) async {
