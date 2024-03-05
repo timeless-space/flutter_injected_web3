@@ -389,7 +389,7 @@ class InjectedWebview extends StatefulWidget {
       JsEthSignTypedData data, int chainId)? signTypedMessage;
   final Future<String> Function(InAppWebViewController controller,
       JsEcRecoverObject data, int chainId)? ecRecover;
-  final Future<IncomingAccountsModel> Function(
+  final Future<IncomingAccountsModel>? Function(
           InAppWebViewController controller, String data, int chainId)?
       requestAccounts;
   final Future<String> Function(
@@ -630,7 +630,7 @@ class _InjectedWebviewState extends State<InjectedWebview> {
                     debugPrint(widget.requestAccounts.toString());
                     widget.requestAccounts
                         ?.call(controller, "", widget.chainId)
-                        .then((signedData) async {
+                        ?.then((signedData) async {
                       final setAddress =
                           "window.ethereum.setAddress(\"${signedData.address}\");";
                       address = signedData.address!;
