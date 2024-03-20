@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/gestures/recognizer.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class InjectedWebview extends StatefulWidget {
+class InjectedWebview extends StatefulWidget implements WebView {
   /// `gestureRecognizers` specifies which gestures should be consumed by the WebView.
   /// It is possible for other gesture recognizers to be competing with the web view on pointer
   /// events, e.g if the web view is inside a [ListView] the [ListView] will want to handle
@@ -39,7 +39,7 @@ class InjectedWebview extends StatefulWidget {
     this.initialOptions,
     this.initialUserScripts,
     this.pullToRefreshController,
-    // this.implementation = We.NATIVE,
+    this.implementation = WebViewImplementation.NATIVE,
     this.contextMenu,
     this.onWebViewCreated,
     this.onLoadStart,
@@ -145,8 +145,8 @@ class InjectedWebview extends StatefulWidget {
   @override
   final URLRequest? initialUrlRequest;
 
-  // @override
-  // final WebViewImplementation implementation;
+  @override
+  final WebViewImplementation implementation;
 
   @override
   final UnmodifiableListView<UserScript>? initialUserScripts;
@@ -415,7 +415,7 @@ class _InjectedWebviewState extends State<InjectedWebview> {
       initialOptions: widget.initialOptions,
       initialUserScripts: widget.initialUserScripts,
       pullToRefreshController: widget.pullToRefreshController,
-      // implementation: widget.implementation,
+      implementation: widget.implementation,
       contextMenu: widget.contextMenu,
       onWebViewCreated: widget.onWebViewCreated,
       onLoadStart: (controller, uri) async {
@@ -515,7 +515,7 @@ class _InjectedWebviewState extends State<InjectedWebview> {
         : _loadInitJs(widget.chainId, widget.rpc);
     debugPrint("RPC: ${widget.rpc}");
     await controller.evaluateJavascript(source: initJs);
-    if (!controller.hasJavaScriptHandler(handlerName: "OrangeHandler")) {
+    if (controller.javaScriptHandlersMap["OrangeHandler"] == null) {
       controller.addJavaScriptHandler(
           handlerName: "OrangeHandler",
           callback: (callback) async {
